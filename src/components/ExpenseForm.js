@@ -1,16 +1,34 @@
 import React, { useState } from "react";
+import { db, auth } from "../firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 function ExpenseForm() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ title, category, amount });
-    setTitle("");
-    setCategory("");
-    setAmount("");
+    if (!title || !category || !amount) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "expenses"), {
+        title,
+        category,
+        amount: Number(amount),
+        createdAt: serverTimestamp(),
+        userId: auth.currentUser.uid,
+      });
+
+      setTitle("");
+      setCategory("");
+      setAmount("");
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
   };
 
   return (
