@@ -2,9 +2,7 @@ import React from "react";
 
 function ExpenseList() {
   const expenses = [
-    { title: "Grocery", category: "Food & Dining", amount: 150, date: "Aug 22, 2025" },
-    { title: "Movie Ticket", category: "Entertainment", amount: 100, date: "Aug 22, 2025" },
-    { title: "Gas Expense", category: "Travel", amount: 200, date: "Aug 22, 2025" },
+    
   ];
 
   return (
