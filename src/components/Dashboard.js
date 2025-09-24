@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
+import ExpenseChart from "./ExpenseChart"; // ⬅️ added
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -23,6 +24,7 @@ function Dashboard() {
 
       <ExpenseForm />
       <ExpenseList />
+      <ExpenseChart /> {/* ⬅️ charts added */}
     </div>
   );
 }
