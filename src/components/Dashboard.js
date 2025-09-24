@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
@@ -13,10 +13,12 @@ function Dashboard() {
     return () => unsub();
   }, []);
 
+  if (!user) return <p>Loading...</p>;
+
   return (
     <div className="dashboard">
       <Navbar user={user} />
-      <h1>Welcome back, {user?.displayName || "User"} 👋</h1>
+      <h1>Welcome back, {user.displayName || user.email} 👋</h1>
       <p>Track and manage your expenses with ease</p>
 
       <ExpenseForm />
