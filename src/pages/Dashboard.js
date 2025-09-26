@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 import Charts from "../components/Charts";
+import ExpenseSummary from "../components/ExpenseSummary";
 import { auth, signOut } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { FaMoneyBillWave, FaSignOutAlt } from "react-icons/fa";
@@ -61,15 +62,17 @@ export default function Dashboard() {
 
         {/* Right Column */}
         <div className="right-column">
-          <div className="card">
-            <h2>Expense Summary</h2>
-            {/* You can add quick stats here later */}
-          </div>
+         <div className="right-column">
+  <div className="card">
+    <h2>Expense Summary</h2>
+    <ExpenseSummary />
+  </div>
 
-          <div className="card">
-            <h2>Expense Charts</h2>
-            <Charts />
-          </div>
+  <div className="card">
+    <h2>Expense Charts</h2>
+    <Charts />
+  </div>
+</div>
         </div>
       </main>
     </div>
