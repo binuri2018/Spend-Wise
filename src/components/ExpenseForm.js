@@ -58,7 +58,7 @@ export default function ExpenseForm() {
 
   return (
     <div className="card">
-      <h3>Add Expense</h3>
+      
       {error && <div className="error">{error}</div>}
 
       <form onSubmit={handleAdd} className="form">

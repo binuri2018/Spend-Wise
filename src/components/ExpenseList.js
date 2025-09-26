@@ -1,7 +1,7 @@
-// src/components/ExpenseList.js
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { db, collection, query, where, orderBy, onSnapshot } from "../firebase";
+import { FaTrash, FaEdit } from "react-icons/fa";
 
 export default function ExpenseList() {
   const { currentUser } = useAuth();
@@ -24,22 +24,35 @@ export default function ExpenseList() {
   }, [currentUser]);
 
   return (
-    <div className="card">
-      <h3>Your Expenses</h3>
+    <div className="expense-list">
       {expenses.length === 0 ? (
         <p className="muted">No expenses yet. Add one above.</p>
       ) : (
-        <ul className="expense-list">
-          {expenses.map(exp => (
-            <li key={exp.id} className="expense-item">
-              <div>
-                <div className="exp-name">{exp.name}</div>
-                <div className="muted small">{exp.type}</div>
-              </div>
-              <div className="exp-amount">₹ {Number(exp.amount).toFixed(2)}</div>
-            </li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {expenses.map((exp) => (
+              <tr key={exp.id}>
+                <td>{exp.name}</td>
+                <td>{exp.type}</td>
+                <td>Rs. {Number(exp.amount).toFixed(2)}</td>
+                <td>{exp.createdAt?.toDate?.().toLocaleDateString()}</td>
+                <td>
+                  <button className="action-btn edit"><FaEdit /></button>
+                  <button className="action-btn delete"><FaTrash /></button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

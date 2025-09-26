@@ -1,11 +1,9 @@
-// src/components/Charts.js
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { db, collection, query, where, onSnapshot } from "../firebase";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 
-
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#8dd1e1", "#a4de6c"];
+const COLORS = ["#f87171", "#60a5fa", "#facc15", "#34d399", "#a78bfa", "#fb923c"];
 
 export default function Charts() {
   const { currentUser } = useAuth();
@@ -15,13 +13,12 @@ export default function Charts() {
     if (!currentUser) return;
     const q = query(collection(db, "expenses"), where("userId", "==", currentUser.uid));
     const unsub = onSnapshot(q, (snap) => {
-      const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
       setExpenses(data);
     });
     return unsub;
   }, [currentUser]);
 
-  // Aggregate by category
   const byCategory = expenses.reduce((acc, e) => {
     const cat = e.type || "Other";
     acc[cat] = (acc[cat] || 0) + Number(e.amount || 0);
@@ -29,16 +26,15 @@ export default function Charts() {
   }, {});
 
   const pieData = Object.entries(byCategory).map(([name, value]) => ({ name, value }));
-  const barData = pieData.map(d => ({ name: d.name, amount: d.value }));
+  const barData = pieData.map((d) => ({ name: d.name, amount: d.value }));
 
   return (
-    <div className="card">
-      <h3>Analysis</h3>
+    <div className="charts-container">
       {expenses.length === 0 ? (
         <p className="muted">Add expenses to see charts.</p>
       ) : (
         <>
-          <div style={{ height: 220 }}>
+          <div className="chart" style={{ height: 220 }}>
             <ResponsiveContainer>
               <PieChart>
                 <Pie
@@ -59,14 +55,33 @@ export default function Charts() {
             </ResponsiveContainer>
           </div>
 
-          <div style={{ height: 260, marginTop: 20 }}>
+          {/* Color Legend */}
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: "0.8rem"
+          }}>
+            {pieData.map((entry, idx) => (
+              <div key={entry.name} style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span style={{
+                  width: "12px",
+                  height: "12px",
+                  background: COLORS[idx % COLORS.length],
+                  borderRadius: "3px"
+                }} />
+                {entry.name}
+              </div>
+            ))}
+          </div>
+
+          <div className="chart" style={{ height: 260 }}>
             <ResponsiveContainer>
               <BarChart data={barData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Legend />
                 <Bar dataKey="amount" name="Amount">
                   {barData.map((entry, idx) => (
                     <Cell key={`barcell-${idx}`} fill={COLORS[idx % COLORS.length]} />
