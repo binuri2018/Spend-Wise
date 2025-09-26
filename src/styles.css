@@ -166,13 +166,12 @@ button.add-expense:hover {
 =================== */
 .expense-list {
   width: 100%;
-  overflow-x: auto; /* ✅ allows scroll on small screens */
+  overflow-x: auto;
 }
 
 .expense-list table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px; /* ✅ keeps structure */
 }
 
 .expense-list th,
@@ -180,7 +179,7 @@ button.add-expense:hover {
   padding: 0.8rem;
   border-bottom: 1px solid #334155;
   text-align: left;
-  white-space: nowrap; /* ✅ avoids ugly breaks */
+  white-space: nowrap;
 }
 
 .expense-list th {
@@ -294,15 +293,6 @@ button.btn:hover {
     padding: 0.8rem;
   }
 
-  /* ✅ removed block table layout, now scrolls */
-  .expense-list {
-    overflow-x: auto;
-  }
-
-  .expense-list table {
-    min-width: 500px; /* ✅ allow horizontal scroll */
-  }
-
   input, select {
     font-size: 1rem;
     padding: 0.8rem;
@@ -330,5 +320,18 @@ button.btn:hover {
 
   .logo {
     font-size: 1rem;
+  }
+
+  /* Hide less important table columns on mobile */
+  .expense-list th:nth-child(1),
+  .expense-list td:nth-child(1), /* Date */
+  .expense-list th:nth-child(2),
+  .expense-list td:nth-child(2)  /* Category */ {
+    display: none;
+  }
+
+  .expense-list table {
+    width: 100%;
+    min-width: unset; 
   }
 }
