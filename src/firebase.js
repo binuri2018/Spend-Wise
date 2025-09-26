@@ -1,3 +1,4 @@
+// src/firebase.js
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -16,11 +17,12 @@ import {
   where,
   onSnapshot,
   orderBy,
-  serverTimestamp, 
-  doc, 
-  deleteDoc 
+  serverTimestamp,
+  doc,
+  deleteDoc
 } from "firebase/firestore";
 
+// Firebase config using environment variables
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -30,6 +32,7 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -50,7 +53,7 @@ export {
   where,
   onSnapshot,
   orderBy,
-  doc,          
-  deleteDoc, 
+  doc,
+  deleteDoc,
   serverTimestamp
 };
