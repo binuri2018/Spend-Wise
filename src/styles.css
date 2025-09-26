@@ -268,4 +268,81 @@ button.btn:hover {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
+
+  .summary-grid {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .summary-box {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .charts-container {
+    flex-direction: column;
+  }
+
+  .chart {
+    padding: 0.8rem;
+  }
+
+  .expense-list table,
+  .expense-list thead,
+  .expense-list tbody,
+  .expense-list th,
+  .expense-list td,
+  .expense-list tr {
+    display: block;
+    width: 100%;
+  }
+
+  .expense-list tr {
+    margin-bottom: 1rem;
+    background: #1e293b;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+  }
+
+  .expense-list td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border: none;
+  }
+
+  .expense-list td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #cbd5e1;
+  }
+
+  input, select {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  button.add-expense,
+  button.btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .welcome-card h1 {
+    font-size: 1.4rem;
+  }
+
+  .card h2 {
+    font-size: 1.1rem;
+  }
+
+  .summary-box p {
+    font-size: 1rem;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
 }
