@@ -53,7 +53,7 @@ export default function ExpenseSummary() {
             <div key={cat} style={{ marginBottom: "0.6rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span>{cat}</span>
-                <span>₹ {amount.toFixed(2)} ({percent.toFixed(0)}%)</span>
+                <span>Rs. {amount.toFixed(2)} ({percent.toFixed(0)}%)</span>
               </div>
               <div style={{
                 height: "6px",

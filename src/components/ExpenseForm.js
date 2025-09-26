@@ -1,10 +1,10 @@
 // src/components/ExpenseForm.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc, serverTimestamp } from "firebase/firestore";
 
-export default function ExpenseForm() {
+export default function ExpenseForm({ editingExpense, clearEdit }) {
   const { currentUser } = useAuth();
   const [name, setName] = useState("");
   const [type, setType] = useState("Entertainment");
@@ -14,7 +14,19 @@ export default function ExpenseForm() {
 
   const categories = ["Entertainment", "Food & Dining", "Travel", "Health", "Other"];
 
-  const handleAdd = async (e) => {
+  useEffect(() => {
+    if (editingExpense) {
+      setName(editingExpense.name);
+      setType(editingExpense.type);
+      setAmount(editingExpense.amount);
+    } else {
+      setName("");
+      setType("Entertainment");
+      setAmount("");
+    }
+  }, [editingExpense]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -36,21 +48,29 @@ export default function ExpenseForm() {
 
     setLoading(true);
     try {
-      await addDoc(collection(db, "expenses"), {
-        userId: currentUser.uid,
-        name,
-        type,
-        amount: amt,
-        createdAt: serverTimestamp(),
-      });
+      if (editingExpense) {
+        await updateDoc(doc(db, "expenses", editingExpense.id), {
+          name,
+          type,
+          amount: amt,
+        });
+        clearEdit();
+      } else {
+        await addDoc(collection(db, "expenses"), {
+          userId: currentUser.uid,
+          name,
+          type,
+          amount: amt,
+          createdAt: serverTimestamp(),
+        });
+      }
 
-      // reset form
       setName("");
-      setAmount("");
       setType("Entertainment");
+      setAmount("");
     } catch (err) {
-      console.error("Error adding expense:", err);
-      setError("Failed to add expense. Please try again.");
+      console.error("Error saving expense:", err);
+      setError(editingExpense ? "Failed to update expense." : "Failed to add expense.");
     } finally {
       setLoading(false);
     }
@@ -58,10 +78,9 @@ export default function ExpenseForm() {
 
   return (
     <div className="card">
-      
       {error && <div className="error">{error}</div>}
 
-      <form onSubmit={handleAdd} className="form">
+      <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
           <label htmlFor="expName">Expense Name</label>
           <input
@@ -101,9 +120,46 @@ export default function ExpenseForm() {
           />
         </div>
 
-        <button className="btn" type="submit" disabled={loading}>
-          {loading ? "Adding..." : "Add Expense"}
-        </button>
+        {/* Flex container for buttons */}
+        <div style={{ display: "flex", alignItems: "center", marginTop: "1rem" }}>
+          {/* Add / Update Button */}
+          <button
+            type="submit"
+            className="btn"
+            disabled={loading}
+            style={{ padding: "0.5rem 1rem" }}
+          >
+            {loading
+              ? editingExpense
+                ? "Updating..."
+                : "Adding..."
+              : editingExpense
+              ? "Update Expense"
+              : "Add Expense"}
+          </button>
+
+          {/* Cancel Button aligned to right */}
+          {editingExpense && (
+            <button
+              type="button"
+              onClick={clearEdit}
+              style={{
+                marginLeft: "auto", // pushes it to the right
+                padding: "0.5rem 1rem",
+                backgroundColor: "#fc4444ff",
+                color: "#ffffff",
+                borderRadius: "0.5rem",
+                cursor: "pointer",
+                fontWeight: 600,
+                transition: "all 0.2s",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#f51e1eff")}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#fc4444ff")}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </form>
     </div>
   );
