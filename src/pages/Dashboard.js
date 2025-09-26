@@ -1,5 +1,5 @@
 // src/pages/Dashboard.js
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
@@ -12,6 +12,9 @@ import { FaMoneyBillWave, FaSignOutAlt } from "react-icons/fa";
 export default function Dashboard() {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+
+  // ✅ State to track which expense is being edited
+  const [editingExpense, setEditingExpense] = useState(null);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -50,29 +53,30 @@ export default function Dashboard() {
         {/* Left Column */}
         <div className="left-column">
           <div className="card">
-            <h2>Add New Expense</h2>
-            <ExpenseForm />
+            <h2>{editingExpense ? "Edit Expense" : "Add New Expense"}</h2>
+            <ExpenseForm
+              editingExpense={editingExpense}
+              clearEdit={() => setEditingExpense(null)}
+            />
           </div>
 
           <div className="card">
             <h2>Your Expenses</h2>
-            <ExpenseList />
+            <ExpenseList onEdit={(expense) => setEditingExpense(expense)} />
           </div>
         </div>
 
         {/* Right Column */}
         <div className="right-column">
-         <div className="right-column">
-  <div className="card">
-    <h2>Expense Summary</h2>
-    <ExpenseSummary />
-  </div>
+          <div className="card">
+            <h2>Expense Summary</h2>
+            <ExpenseSummary />
+          </div>
 
-  <div className="card">
-    <h2>Expense Charts</h2>
-    <Charts />
-  </div>
-</div>
+          <div className="card">
+            <h2>Expense Charts</h2>
+            <Charts />
+          </div>
         </div>
       </main>
     </div>

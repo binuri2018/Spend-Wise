@@ -65,14 +65,15 @@ button {
 }
 
 .btn.logout {
-  background: #ef4444;
+  background: #fa5555;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-weight: 600;
+  font-weight: 400;
   transition: background 0.2s ease;
 }
 
