@@ -294,7 +294,7 @@ button.btn:hover {
   .expense-list td,
   .expense-list tr {
     display: block;
-    width: 100%;
+    width: 300%;
   }
 
   .expense-list tr {
@@ -344,5 +344,13 @@ button.btn:hover {
 
   .logo {
     font-size: 1rem;
+  }
+  .expense-list {
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .expense-list table {
+    min-width: 500px; 
   }
 }
